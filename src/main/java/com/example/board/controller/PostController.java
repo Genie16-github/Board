@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.entity.Post;
 import com.example.board.repository.PostRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
+    public Post createPost(@Valid @RequestBody Post post) {
         return postRepository.save(post);
     }
 
@@ -37,7 +38,7 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post postRequest) {
+    public Post updatePost(@PathVariable Long id, @Valid @RequestBody Post postRequest) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 

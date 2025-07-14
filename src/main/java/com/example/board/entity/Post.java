@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +18,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "제목은 필수입니다.")  // 요청 들어올 때 검증
+    @Column(nullable = false)               // DB가 null 저장 차단
     private String title;
 
+    @NotBlank(message = "내용은 필수입니다.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
