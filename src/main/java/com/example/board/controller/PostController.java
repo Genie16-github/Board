@@ -27,4 +27,32 @@ public class PostController {
     public Post createPost(@RequestBody Post post) {
         return postRepository.save(post);
     }
+
+    // 게시글 단일 조회
+    @GetMapping("/{id}")
+    public Post getPostById(@PathVariable Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+    }
+
+    // 게시글 수정
+    @PutMapping("/{id}")
+    public Post updatePost(@PathVariable Long id, @RequestBody Post postRequest) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        post.setTitle(postRequest.getTitle());
+        post.setContent(postRequest.getContent());
+        post.setAuthor(postRequest.getAuthor());
+
+        return postRepository.save(post);
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        postRepository.delete(post);
+    }
 }
