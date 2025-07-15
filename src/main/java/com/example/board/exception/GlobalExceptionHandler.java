@@ -1,5 +1,6 @@
 package com.example.board.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -42,5 +43,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    // 1시간 지났을 경우 토큰 만료 -> 다시 로그인
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> handleExpiredToken(ExpiredJwtException e) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("토큰이 만료되었습니다. 다시 로그인해주세요.");
     }
 }

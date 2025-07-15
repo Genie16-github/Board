@@ -2,6 +2,7 @@ package com.example.board.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -10,8 +11,11 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "MySuperSecretKeyForJwt1234567890"; // 최소 32바이트
-    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1시간
+    @Value("${jwt.secret}")
+    private String SECRET_KEY; // 최소 32바이트
+
+    @Value("${jwt.expiration}")
+    private long EXPIRATION_TIME; // 1시간
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
